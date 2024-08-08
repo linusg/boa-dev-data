@@ -4,6 +4,7 @@ const engines = new Map();
 engines.set("boa", {});
 engines.set("v8-jitless", {});
 engines.set("sm-jitless", {});
+engines.set("kiesel", {});
 engines.set("libjs", {});
 engines.set("duktape", {});
 engines.set("quickjs", {});
