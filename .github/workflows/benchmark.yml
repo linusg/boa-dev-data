@@ -64,6 +64,7 @@ jobs:
       - name: Benchmarking Kiesel
         run: |
           wget -O ./bin/kiesel "https://files.kiesel.dev/kiesel-linux-$(uname -m)-releasefast"
+          chmod +x ./bin/kiesel
           ./bin/kiesel data/bench/bench-v8/combined.js > data/bench/kiesel_results.txt
 
       - name: Benchmarking LibJS
