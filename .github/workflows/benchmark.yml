@@ -36,6 +36,9 @@ jobs:
             ~/.cargo/registry
           key: ${{ runner.os }}-cargo-benchmarks-${{ hashFiles('**/Cargo.lock') }}
       - uses: actions/setup-node@v4
+      - name: Install esvu
+        run: |
+          npm i -g github:CanadaHonk/esvu
 
       - name: Benchmarking duktape
         run: |
@@ -47,7 +50,6 @@ jobs:
 
       - name: Benchmarking quickJS
         run: |
-          npm i -g esvu
           esvu install quickjs
           ./bin/quickjs data/bench/bench-v8/combined.js > data/bench/quickjs_results.txt
 
