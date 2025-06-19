@@ -41,6 +41,7 @@ const postData = { results: {} };
 // generate JSON files for each benchmark
 benchmarks.forEach((benchmark) => {
   const data = JSON.parse(fs.readFileSync(`./bench/results/${benchmark}.json`));
+  // don't have uppercase names, e.g: RayTrace -> rayTrace
   const benchmarkNormalized = benchmark.charAt(0).toLowerCase() + benchmark.slice(1);
   postData.results[benchmarkNormalized] = {};
   engines.forEach((val, engine) => {
