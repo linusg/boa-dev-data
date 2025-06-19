@@ -36,11 +36,16 @@ engines.forEach((val, engine) => {
   val["score"] = parseInt(scoreRegex.exec(results)[1]);
 });
 
+
+const postData = { results: {} };
 // generate JSON files for each benchmark
 benchmarks.forEach((benchmark) => {
   const data = JSON.parse(fs.readFileSync(`./bench/results/${benchmark}.json`));
+  const benchmarkNormalized = benchmark.charAt(0).toLowerCase() + benchmark.slice(1);
+  postData.results[benchmarkNormalized] = {};
   engines.forEach((val, engine) => {
     data["results"][engine].push(val[benchmark]);
+    postData.results[benchmarkNormalized][engine] = val[benchmark];
   });
   data["labels"].push(new Date().getTime());
   fs.writeFileSync(
@@ -48,3 +53,21 @@ benchmarks.forEach((benchmark) => {
     JSON.stringify(data, null, 2)
   );
 });
+
+// Send off data to API
+postData.time = new Date().getTime();
+try {
+  const response = await fetch("http://benchmarks.jason-williams.co.uk/populate", {
+    body: JSON.stringify(postData),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: 'POST'
+  });
+
+  if (!response.ok) {
+    console.error(`Failed with status code ${response.status}`)
+  }
+} catch (e) {
+  console.error(e);
+}
