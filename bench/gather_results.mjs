@@ -58,7 +58,7 @@ benchmarks.forEach((benchmark) => {
 // Send off data to API
 postData.time = new Date().getTime();
 try {
-  const response = await fetch("http://benchmarks.jason-williams.co.uk/populate", {
+  const response = await fetch("http://boa-api.jason-williams.co.uk/populate", {
     body: JSON.stringify(postData),
     headers: {
       "Content-Type": "application/json"
