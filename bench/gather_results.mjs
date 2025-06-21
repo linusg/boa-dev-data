@@ -23,6 +23,7 @@ const benchmarks = [
 
 const resultsRegex = new RegExp('"?RESULT"?\\s"?(\\w+)"?\\s"?(\\d+)"?');
 const scoreRegex = new RegExp('"?SCORE"?\\s"?(\\d+)"?');
+const time = new Date().getTime();
 
 // gather data from txt files
 engines.forEach((val, engine) => {
@@ -37,7 +38,7 @@ engines.forEach((val, engine) => {
 });
 
 
-const postData = { results: {} };
+const postData = { results: {}, time};
 // generate JSON files for each benchmark
 benchmarks.forEach((benchmark) => {
   const data = JSON.parse(fs.readFileSync(`./bench/results/${benchmark}.json`));
@@ -48,15 +49,13 @@ benchmarks.forEach((benchmark) => {
     data["results"][engine].push(val[benchmark]);
     postData.results[benchmarkNormalized][engine] = val[benchmark];
   });
-  data["labels"].push(new Date().getTime());
+  data["labels"].push(time);
   fs.writeFileSync(
     `./bench/results/${benchmark}.json`,
     JSON.stringify(data, null, 2)
   );
 });
 
-// Send off data to API
-postData.time = new Date().getTime();
 try {
   const response = await fetch("https://boa-api.jason-williams.co.uk/populate", {
     body: JSON.stringify(postData),
