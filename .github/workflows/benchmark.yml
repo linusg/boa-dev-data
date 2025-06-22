@@ -84,6 +84,8 @@ jobs:
           cargo run --release --bin boa -- ../data/bench/bench-v8/combined.js > ../data/bench/boa_results.txt
 
       - name: Collate Results
+        env:
+          BENCHMARKS_API_KEY: ${{ secrets.BENCHMARKS_API_KEY}}
         run: |
           cd data
           node bench/gather_results.mjs

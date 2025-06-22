@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import process from "node:process";
 
 const engines = new Map();
 engines.set("boa", {});
@@ -60,7 +61,8 @@ try {
   const response = await fetch("https://boa-api.jason-williams.co.uk/populate", {
     body: JSON.stringify(postData),
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "BENCHMARKS-API-KEY": process.env["BENCHMARKS_API_KEY"]
     },
     method: 'POST'
   });
